@@ -11,11 +11,21 @@ func Map[src any, dst any](slice []src, fn func(s src) dst) []dst {
 }
 
 // 切片转map
-//func ToMap[slice []T, k,v T, T any](src slice, fn func(T) (key, val string)) m {
-//	res := make(map[k]v)
-//	for _, val := range src {
-//		key, v := fn(val)
-//		res[key] = v
-//	}
-//	return res
-//}
+func ToMap[T any, key comparable](src []T, fn func(T) (k key)) map[key]T {
+	res := make(map[key]T)
+	for _, v := range src {
+		k1 := fn(v)
+		res[k1] = v
+	}
+	return res
+}
+
+// 切片转mapV2
+func ToMapV2[T any, key comparable, val any](src []T, fn func(T) (k key, v val)) map[key]val {
+	res := make(map[key]val)
+	for _, v := range src {
+		k1, v1 := fn(v)
+		res[k1] = v1
+	}
+	return res
+}
