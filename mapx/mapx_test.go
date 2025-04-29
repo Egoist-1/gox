@@ -34,3 +34,48 @@ func TestMap(t *testing.T) {
 		})
 	}
 }
+
+func TestContain(t *testing.T) {
+	type User struct {
+		Name string
+	}
+	testCase := []struct {
+		Name string
+		src  map[string]User
+		fn   func(val User) bool
+		res  string
+		res2 bool
+	}{
+		{
+			Name: "success",
+			src: map[string]User{
+				"AA": User{Name: "aa"},
+				"BB": User{Name: "bb"},
+			},
+			fn: func(val User) bool {
+				return val.Name == "bb"
+			},
+			res:  "BB",
+			res2: true,
+		},
+		{
+			Name: "失败",
+			src: map[string]User{
+				"AA": User{Name: "aa"},
+				"BB": User{Name: "bb"},
+			},
+			fn: func(val User) bool {
+				return val.Name == "cc"
+			},
+			res:  "",
+			res2: false,
+		},
+	}
+	for _, tc := range testCase {
+		t.Run(tc.Name, func(t *testing.T) {
+			key, ok := Contain[map[string]User](tc.src, tc.fn)
+			assert.Equal(t, tc.res, key)
+			assert.Equal(t, tc.res2, ok)
+		})
+	}
+}

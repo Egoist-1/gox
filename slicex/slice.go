@@ -10,7 +10,7 @@ func Map[src any, dst any](slice []src, fn func(s src) dst) []dst {
 	return res
 }
 
-// ToMap 切片转Map, T 切片类型 , map的val 为切片类型,
+// ToMap 切片转Map, T 切片类型 , fn 如何生成key,map的val 为切片类型,
 func ToMap[T any, key comparable](src []T, fn func(T) (k key)) map[key]T {
 	res := make(map[key]T)
 	for _, v := range src {
@@ -20,9 +20,9 @@ func ToMap[T any, key comparable](src []T, fn func(T) (k key)) map[key]T {
 	return res
 }
 
-// ToMapV2 切片转Map, T 切片类型 , map的val可以指定类型
-func ToMapV2[T any, key comparable, val any](src []T, fn func(T) (k key, v val)) map[key]val {
-	res := make(map[key]val)
+// ToMapV2 切片转Map, T 切片类型 ,fn 如何生成 key和val, map的val可以指定类型
+func ToMapV2[T any, Map ~map[key]val, key comparable, val any](src []T, fn func(T) (k key, v val)) Map {
+	res := make(Map)
 	for _, v := range src {
 		k1, v1 := fn(v)
 		res[k1] = v1
