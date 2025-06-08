@@ -20,3 +20,6 @@ func Contain[Map ~map[key]val, key comparable, val any](m Map, fn func(val) bool
 	var k key
 	return k, false
 }
+
+//todo
+//map 的辅助方法
